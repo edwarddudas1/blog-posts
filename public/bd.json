@@ -1,0 +1,25 @@
+{
+    "posts": [
+        {
+            "id": "1",
+            "title": "post 1",
+            "content": "this is the first post",
+            "comments": [
+                "hello1",
+                "great post",
+                "test comment"
+            ]
+        },
+
+        {
+            "id": "2",
+            "title": "post 2",
+            "content": "this is the second post",
+            "comments": [
+                "hello2",
+                "great post2",
+                "test comment2"
+            ]
+        }
+    ]
+}

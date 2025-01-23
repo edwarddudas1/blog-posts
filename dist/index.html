@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.e308ff8e.css">
+    <link rel="stylesheet" href="/da232d78aa810382f2dcdceae308ff8e.css">
     <title>blog posts</title>
-<script src="/style.e308ff8e.js"></script></head>
-<body>
-    <p>sdfghjk</p>
-    <script src="/script.75da7f30.js"></script>
-</body>
+  </head>
+  <body>
+    <h1>Блог</h1>
+
+    <form id="createPostForm">
+      <input type="text" id="titleInput" placeholder="Заголовок" required="">
+      <textarea id="contentInput" placeholder="Зміст" required=""></textarea>
+      <button type="submit">Створити пост</button>
+    </form>
+
+    <div id="postsContainer"></div>
+
+    <!-- ШАБЛОН -->
+    <div class="post">
+      <h2></h2>
+      <p></p>
+      <button class="editPostButton" data-id="">Редагувати</button>
+      <button class="deletePostButton" data-id="">Видалити</button>
+      <div class="commentsContainer" data-id="">
+        <h3>Коментарі:</h3>
+        <ul>
+          <li></li>
+        </ul>
+        <form class="createCommentForm">
+          <input type="text" class="commentInput" placeholder="Новий коментар" required="">
+          <button type="submit">Додати коментар</button>
+        </form>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/a753bac1facc08dff1c32736cbcd838c.js"></script>
+    <script src="/9a9569e9d73f33740eada95275da7f30.js"></script>
+  </body>
 </html>

@@ -1,13 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
     <title>blog posts</title>
-</head>
-<body>
-    <p>sdfghjk</p>
+  </head>
+  <body>
+    <h1>Блог</h1>
+
+    <form id="createPostForm">
+      <input type="text" id="titleInput" placeholder="Заголовок" required />
+      <textarea id="contentInput" placeholder="Зміст" required></textarea>
+      <button type="submit">Створити пост</button>
+    </form>
+
+    <div id="postsContainer"></div>
+
+    <!-- ШАБЛОН -->
+    <div class="post">
+      <h2></h2>
+      <p></p>
+      <button class="editPostButton" data-id="">Редагувати</button>
+      <button class="deletePostButton" data-id="">Видалити</button>
+      <div class="commentsContainer" data-id="">
+        <h3>Коментарі:</h3>
+        <ul>
+          <li></li>
+        </ul>
+        <form class="createCommentForm">
+          <input
+            type="text"
+            class="commentInput"
+            placeholder="Новий коментар"
+            required
+          />
+          <button type="submit">Додати коментар</button>
+        </form>
+      </div>
+    </div>
+    <script src="
+    https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js
+"></script>
     <script src="./script.js"></script>
-</body>
+  </body>
 </html>
