@@ -1,3 +1,5 @@
+
+import jsonData from './bd.json';
   // Отримання списку постів
   async function getPosts() {
     try {
@@ -6,7 +8,7 @@
     }
   }
 
-
+console.log(jsonData);
 //   // Створення нового поста
 //   async function createPost(title, content) {
 //     try {
@@ -44,9 +46,9 @@
 //   }
 
 
-//   // Оновлення відображення постів на сторінці
-//   function renderPosts(posts) {
-//       }
+  // Оновлення відображення постів на сторінці
+  function renderPosts(posts) {
+      }
 
 
 //   // Обробник події для створення поста
