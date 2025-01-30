@@ -129,6 +129,11 @@ module.exports = {
     "title": "post 2",
     "content": "this is the second post",
     "comments": ["hello2", "great post2", "test comment2"]
+  }, {
+    "id": "3",
+    "title": "post 3",
+    "content": "this is the third post",
+    "comments": ["hello3", "great post3", "test comment3"]
   }]
 };
 },{}],"script.js":[function(require,module,exports) {
@@ -224,7 +229,8 @@ function startApp() {
 }
 function _startApp() {
   _startApp = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-    var posts;
+    var _document$querySelect;
+    var posts, menuTemplate;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -232,8 +238,16 @@ function _startApp() {
           return getPosts();
         case 2:
           posts = _context2.sent;
-          renderPosts(posts);
-        case 4:
+          menuTemplate = (_document$querySelect = document.querySelector(".menuTemplate")) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.innerHTML;
+          if (menuTemplate) {
+            _context2.next = 6;
+            break;
+          }
+          return _context2.abrupt("return", console.log('template is not defind'));
+        case 6:
+          template = Handlebars.compile(menuTemplate);
+          renderPosts(postsArray);
+        case 8:
         case "end":
           return _context2.stop();
       }
@@ -267,7 +281,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51471" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57542" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -86,7 +86,12 @@ let template;
   // Запуск додатку
   async function startApp() {
     const posts = await getPosts();
-    renderPosts(posts);
+    const menuTemplate = document.querySelector(".menuTemplate")?.innerHTML
+    if(!menuTemplate){
+      return console.log('template is not defind')
+    }
+    template = Handlebars.compile(menuTemplate)
+    renderPosts(postsArray);
   }
 
 
