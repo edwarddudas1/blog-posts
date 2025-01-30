@@ -1,14 +1,19 @@
-
 import jsonData from './bd.json';
+
+let postsArray = [];
   // Отримання списку постів
   async function getPosts() {
     try {
+      postsArray = jsonData.posts;
+      console.log(postsArray);
+      
           } catch (error) {
       console.error(error);
     }
   }
 
-console.log(jsonData);
+// console.log(jsonData);
+
 //   // Створення нового поста
 //   async function createPost(title, content) {
 //     try {
@@ -48,7 +53,7 @@ console.log(jsonData);
 
   // Оновлення відображення постів на сторінці
   function renderPosts(posts) {
-      }
+  }
 
 
 //   // Обробник події для створення поста
