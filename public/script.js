@@ -1,6 +1,7 @@
 import jsonData from './bd.json';
-
 let postsArray = [];
+let template;
+
   // Отримання списку постів
   async function getPosts() {
     try {
@@ -52,8 +53,17 @@ let postsArray = [];
 
 
   // Оновлення відображення постів на сторінці
+  
+  
   function renderPosts(posts) {
-    
+    const menuContainer = document.querySelector('.menuContainer');
+
+    if (!template) {
+      return console.log('Template not found');
+    }
+    const postTemplate = template({ posts });
+    menuContainer.innerHTML = postTemplate;
+
   }
 
 
