@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import { error } from "console";
 const app = express();
 const port = 3000;
 
@@ -30,6 +31,33 @@ app.get("/posts", (req, res) => {
   });
 });
 
+app.post('/posts', (req, res) => {
+  const newPost = req.body
+  fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
+    if(error) {
+      console.log(error);
+      res.status(500).send("Error reading file");
+      return;
+    }
+    const jsonParseData = JSON.parse(data)
+    jsonParseData.posts.push(newPost)
+
+    fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
+      if(error) {
+        console.log(error);
+        res.status(500).send("Error writing file");
+        return;
+      }
+      res.status(201).send('Post is successfully created')
+    })
+  })
+
+})
+
+
+
+
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
 });
+
