@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
+import { error } from "console";
 const app = express();
 const port = 3000;
 
@@ -30,6 +31,14 @@ app.get("/posts", (req, res) => {
   });
 });
 
+app.post('/posts', (req, res) => {
+  const newPost = req.body
+  fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
+    
+  })
+})
+
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
 });
+
