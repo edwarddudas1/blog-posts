@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-import { error } from "console";
 const app = express();
 const port = 3000;
 
