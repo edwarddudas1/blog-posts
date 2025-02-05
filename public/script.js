@@ -1,28 +1,31 @@
-import jsonData from './bd.json';
 let postsArray = [];
 let template;
 
-  // Отримання списку постів
-  async function getPosts() {
-    try {
-      postsArray = jsonData.posts;
-      console.log(postsArray);
-      
-          } catch (error) {
-      console.error(error);
+// Отримання списку постів
+async function getPosts() {
+  try {
+    const response = await fetch("/bd.json");
+    console.log("Response status:", response.status);
+
+    if (!response.ok) {
+      throw new Error("Network Error Response Identified");
     }
+
+    const data = await response.json();
+    console.log("Fetched data:", data);
+    postsData = data.posts;
+  } catch (error) {
+    console.error("Error fetching or processing data", error);
   }
+}
 
-// console.log(jsonData);
-
-//   // Створення нового поста
+// Створення нового поста
 //   async function createPost(title, content) {
 //     try {
 //           } catch (error) {
 //       console.error(error);
 //     }
 //   }
-
 
 //   // Оновлення поста
 //   async function updatePost(id, title, content) {
@@ -32,8 +35,7 @@ let template;
 //     }
 //   }
 
-
-//   // Видалення поста
+// Видалення поста
 //   async function deletePost(id) {
 //     try {
 //            } catch (error) {
@@ -41,58 +43,57 @@ let template;
 //     }
 //   }
 
-
-//   // Додавання коментаря до поста
+// Додавання коментаря до поста
 //   async function createComment(postId, comment) {
 //     try {
-           
+
 //     } catch (error) {
 //       console.error(error);
 //     }
 //   }
 
+// Оновлення відображення постів на сторінці
 
-  // Оновлення відображення постів на сторінці
-  
-  
-  function renderPosts(posts) {
-    const menuContainer = document.querySelector('.menuContainer');
+function renderPosts(posts) {
+  const menuContainer = document.querySelector(".menuContainer");
 
-    if (!template) {
-      return console.log('Template not found');
-    }
-    const postTemplate = template({ posts });
-    menuContainer.innerHTML = postTemplate;
-
+  if (!template) {
+    return console.log("Template not found");
   }
+  const postTemplate = template({ posts });
+  menuContainer.innerHTML = postTemplate;
+}
 
-
-//   // Обробник події для створення поста
+// Обробник події для створення поста
 //   document.getElementById('createPostForm').addEventListener('submit', cb);
 
-
-//   // Обробник події для редагування поста
+// Обробник події для редагування поста
 //   document.addEventListener('click', cb);
 
-
-//   // Обробник події для видалення поста
+// Обробник події для видалення поста
 //   document.addEventListener('click', cb);
 
-
-//   // Обробник події для додавання коментаря
+// Обробник події для додавання коментаря
 //   document.addEventListener('submit', cb);
 
+// Запуск додатку
+async function startApp() {
+  const posts = await getPosts();
+  const sourceElement = document.querySelector(".menuTemplate");
 
-  // Запуск додатку
-  async function startApp() {
-    const posts = await getPosts();
-    const menuTemplate = document.querySelector(".menuTemplate")?.innerHTML
-    if(!menuTemplate){
-      return console.log('template is not defind')
-    }
-    template = Handlebars.compile(menuTemplate)
-    renderPosts(postsArray);
+  const source =
+    sourceElement.innerHTML ||
+    sourceElement.content.firstElementChild.innerHTML;
+  if (!source.trim()) {
+    console.error("Template source is empty");
+    return;
   }
 
+  const template = Handlebars.compile(source);
+  const html = template({ posts: postsData });
 
-  startApp();
+  document.querySelector(".menuContainer").innerHTML = html;
+  renderPosts(postsArray);
+}
+
+startApp();
