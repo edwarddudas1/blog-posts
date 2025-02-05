@@ -13,7 +13,7 @@ async function getPosts() {
 
     const data = await response.json();
     console.log("Fetched data:", data);
-    postsData = data.posts;
+    postsArray = data.posts;
   } catch (error) {
     console.error("Error fetching or processing data", error);
   }
@@ -90,7 +90,7 @@ async function startApp() {
   }
 
   const template = Handlebars.compile(source);
-  const html = template({ posts: postsData });
+  const html = template({ posts: postsArray });
 
   document.querySelector(".menuContainer").innerHTML = html;
   renderPosts(postsArray);
