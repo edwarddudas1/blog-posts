@@ -19,13 +19,19 @@ async function getPosts() {
   }
 }
 
-// Створення нового поста
-//   async function createPost(title, content) {
-//     try {
-//           } catch (error) {
-//       console.error(error);
-//     }
-//   }
+async function createPost(title, content) {
+  try {
+    const response = await fetch("/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(title, content)
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 //   // Оновлення поста
 //   async function updatePost(id, title, content) {
