@@ -28,12 +28,12 @@ async function getPosts() {
 //   }
 
 //   // Оновлення поста
-//   async function updatePost(id, title, content) {
-//     try {
-//            } catch (error) {
-//       console.error(error);
-//     }
-//   }
+  async function updatePost(id, title, content) {
+    try {console.log('updatePost')
+           } catch (error) {
+      console.error(error);
+    }
+  }
 
 // Видалення поста
 //   async function deletePost(id) {
@@ -69,6 +69,34 @@ function renderPosts(posts) {
 
 // Обробник події для редагування поста
 //   document.addEventListener('click', cb);
+//   // Оновлення поста
+// document.addEventListener("DOMContentLoaded", function () {
+//   document.querySelectorAll(".editPostButton").forEach(button => {
+//       button.addEventListener("click", function () {
+//           const post = this.closest(".post"); 
+//           const titleElement = post.querySelector("h2");
+//           const textElement = post.querySelector("p");
+//           const postId = this.getAttribute("data-id");
+//           const newTitle = prompt("Введіть новий заголовок:", titleElement.textContent);
+//           const newText = prompt("Введіть новий текст поста:", textElement.textContent);
+
+//           if (newTitle !== null) titleElement.textContent = newTitle;
+//           if (newText !== null) textElement.textContent = newText;
+
+//           console.log(`Пост із ID ${postId} оновлено:`, { newTitle, newText });
+//       });
+//   });
+// });
+document.addEventListener("click", function (event) {
+ if( event.target.classList.contains('editPostButton')){
+const findId = event.target.getAttribute('data-id');  
+const  newTitle = prompt('Введіть новий заголовок:');
+const  newText = prompt('Введіть новий текст поста:');
+if(newTitle && newText){
+  updatePost(findId, newTitle, newText);
+ }
+}
+});
 
 // Обробник події для видалення поста
 //   document.addEventListener('click', cb);
