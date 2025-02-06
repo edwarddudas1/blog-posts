@@ -19,35 +19,23 @@ console.log(jsonData);
 
 
 //   // Оновлення поста
-let posts = [
-  { id: 1, title: "Перший пост", content: "Це зміст першого поста." },
-  { id: 2, title: "Другий пост", content: "Це зміст другого поста." }
-];
-function updatePost(id, newTitle, newContent) {
-  const post = posts.find(post => post.id === id);
-  if (post) {
-      post.title = newTitle;
-      post.content = newContent;
-      console.log("Пост оновлено:, post");
-  } else {
-      console.log("Пост не знайдено");
-  }
-}
-function editPost(id) {
-  const post = posts.find(post => post.id === id);
-  if (!post) {
-      console.log("Пост не знайдено");
-      return;
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".editPostButton").forEach(button => {
+      button.addEventListener("click", function () {
+          const post = this.closest(".post"); 
+          const titleElement = post.querySelector("h2");
+          const textElement = post.querySelector("p");
+          const postId = this.getAttribute("data-id");
+          const newTitle = prompt("Введіть новий заголовок:", titleElement.textContent);
+          const newText = prompt("Введіть новий текст поста:", textElement.textContent);
 
+          if (newTitle !== null) titleElement.textContent = newTitle;
+          if (newText !== null) textElement.textContent = newText;
 
-  const newTitle = prompt("Введіть новий заголовок:", post.title);
-  const newContent = prompt("Введіть новий зміст:", post.content);
-
-  if (newTitle && newContent) {
-      updatePost(id, newTitle, newContent);
-  }
-}
+          console.log(`Пост із ID ${postId} оновлено:`, { newTitle, newText });
+      });
+  });
+});
 
 //   // Видалення поста
 //   async function deletePost(id) {
