@@ -54,7 +54,28 @@ app.post('/posts', (req, res) => {
 
 })
 
+app.post('/comments', (req, res) => {
+  const newComment = req.body;
+  fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send("Error reading file");
+      return;
+    }
+    const jsonParseData = JSON.parse(data);
+    jsonParseData.comments = jsonParseData.comments || [];
+    jsonParseData.comments.push(newComment);
 
+    fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error writing file");
+        return;
+      }
+      res.status(201).send('Comment is successfully created');
+    });
+  });
+});
 
 
 app.listen(port, () => {
