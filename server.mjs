@@ -53,6 +53,31 @@ app.post('/posts', (req, res) => {
 
 })
 
+app.put('/posts/:id',(req, res) => {
+  const getId = req.params.id
+  const getUpdatedPostData = req.body
+  fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
+    if(error) {
+      console.log(error);
+      res.status(500).send("Error reading file");
+      return;
+    }
+    const jsonParseData = JSON.parse(data)
+    jsonParseData.posts.push(newPost)
+
+    fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
+      if(error) {
+        console.log(error);
+        res.status(500).send("Error writing file");
+        return;
+      }
+      res.status(201).send('Post is successfully created')
+    })
+  })
+})
+
+
+
 
 
 
