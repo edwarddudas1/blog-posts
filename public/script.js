@@ -50,6 +50,8 @@ async function deletePost(id) {
     }
     
     console.log("Post deleted successfully");
+
+    const deletePost = await fetchResponse.json();
     
   } catch (error) {
     console.error("Error deleting post", error);
