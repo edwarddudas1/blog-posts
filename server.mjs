@@ -54,7 +54,8 @@ app.post('/posts', (req, res) => {
 
 })
 
-app.post('/comments', (req, res) => {
+
+app.post('/posts/:id/comments', (req, res) => {
   const newComment = req.body;
   fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
     if (error) {
