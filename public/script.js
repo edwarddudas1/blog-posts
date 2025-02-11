@@ -36,12 +36,25 @@ async function getPosts() {
 //   }
 
 // Видалення поста
-//   async function deletePost(id) {
-//     try {
-//            } catch (error) {
-//       console.error(error);
-//     }
-//   }
+async function deletePost(id) {
+  try {
+    const fetchResponse = await fetch(`/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    
+    if (!fetchResponse.ok) {
+      throw new Error("Network Error Response Identified");
+    }
+    
+    console.log("Post deleted successfully");
+    
+  } catch (error) {
+    console.error("Error deleting post", error);
+  }
+}
 
 // Додавання коментаря до поста
 //   async function createComment(postId, comment) {
