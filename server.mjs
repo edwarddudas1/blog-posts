@@ -69,7 +69,7 @@ app.put('/posts/:id',(req, res) => {
       return;
     }
 
-    
+    jsonParseData.posts[checkIndex] = {...jsonParseData.posts[checkIndex],...getUpdatedPostData}
 
     fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
       if(error) {
