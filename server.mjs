@@ -63,7 +63,13 @@ app.put('/posts/:id',(req, res) => {
       return;
     }
     const jsonParseData = JSON.parse(data)
-    jsonParseData.posts.push(newPost)
+    const checkIndex = jsonParseData.posts.findIndex((post) => post.id === getId)
+    if(checkIndex === -1) {
+      res.status(404).send('Post not found')
+      return;
+    }
+
+    
 
     fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
       if(error) {
