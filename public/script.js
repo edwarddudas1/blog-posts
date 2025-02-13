@@ -38,20 +38,20 @@ async function getPosts() {
 // Видалення поста
 async function deletePost(id) {
   try {
-    const fetchResponse = await fetch(`/posts/${id}`, {
+    const response = await fetch(`/posts/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
     
-    if (!fetchResponse.ok) {
+    if (!response.ok) {
       throw new Error("Network Error Response Identified");
     }
     
     console.log("Post deleted successfully");
 
-    const deletePost = await fetchResponse.json();
+    const deletePost = await response.json();
     
   } catch (error) {
     console.error("Error deleting post", error);
