@@ -34,7 +34,7 @@ async function createPost(title, content) {
       throw new Error("Failed to create post");
     }
 
-    const newPost = response.json();
+    const newPost = await response.json(); 
     postsArray.push(newPost);
     renderPosts(postsArray);
   } catch (error) {
@@ -72,14 +72,14 @@ async function deletePost(id) {
         "Content-Type": "application/json",
       },
     });
+    console.log("deletePost response:", response);
 
     if (!response.ok) {
       throw new Error("Network Error Response Identified");
     }
 
-    console.log("Post deleted successfully");
-
-    const deletePost = await response.json();
+    postsArray = postsArray.filter(post => post.id !== id);
+    renderPosts(postsArray);
   } catch (error) {
     console.error("Error deleting post", error);
   }
