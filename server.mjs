@@ -9,8 +9,8 @@ const port = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, "public")))
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   console.log("jfjdjfk");
@@ -19,27 +19,26 @@ app.get("/", (req, res) => {
 
 app.get("/posts", (req, res) => {
   fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
-    if(error) {
+    if (error) {
       console.log(error);
       res.status(500).send("Error reading file");
       return;
     }
     const bd = JSON.parse(data);
     res.status(200).send(bd.posts);
-
   });
 });
 
-app.post('/posts', (req, res) => {
-  const newPost = req.body
+app.post("/posts", (req, res) => {
+  const newPost = req.body;
   fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
-    if(error) {
+    if (error) {
       console.log(error);
       res.status(500).send("Error reading file");
       return;
     }
-    const jsonParseData = JSON.parse(data)
-    jsonParseData.posts.push(newPost)
+    const jsonParseData = JSON.parse(data);
+    jsonParseData.posts.push(newPost);
 
     fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(jsonParseData), (error) => {
       if(error) {
@@ -52,7 +51,6 @@ app.post('/posts', (req, res) => {
   })
 
 })
-
 
 app.post('/posts/:id/comments', (req, res) => {
   const newComment = req.body;
@@ -77,8 +75,45 @@ app.post('/posts/:id/comments', (req, res) => {
   });
 });
 
+app.put("/posts/:id", (req, res) => {
+  const getId = req.params.id;
+  const getUpdatedPostData = req.body;
+  fs.readFile(path.join(__dirname, "public", "bd.json"), (error, data) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send("Error reading file");
+      return;
+    }
+    const jsonParseData = JSON.parse(data);
+    const checkIndex = jsonParseData.posts.findIndex(
+      (post) => post.id === getId
+    );
+    if (checkIndex === -1) {
+      res.status(404).send("Post not found");
+      return;
+    }
+
+    jsonParseData.posts[checkIndex] = {
+      ...jsonParseData.posts[checkIndex],
+      ...getUpdatedPostData,
+    };
+
+    fs.writeFile(
+      path.join(__dirname, "public", "bd.json"),
+      JSON.stringify(jsonParseData),
+      (error) => {
+        if (error) {
+          console.log(error);
+          res.status(500).send("Error writing file");
+          return;
+        }
+        res.status(201).send("Post is successfully updated");
+      }
+    );
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
 });
-
