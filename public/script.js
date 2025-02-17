@@ -26,18 +26,17 @@ async function createPost(title, content) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({title, content})
+      body: JSON.stringify({ title, content }),
     });
-    console.log(response, 'response')
+    console.log(response, "response");
 
     if (!response.ok) {
       throw new Error("Failed to create post");
     }
 
-    const newPost = response.json()
-    postsArray.push(newPost)
-    renderPosts(postsArray)
-
+    const newPost = response.json();
+    postsArray.push(newPost);
+    renderPosts(postsArray);
   } catch (error) {
     console.log(error);
   }
@@ -73,15 +72,14 @@ async function deletePost(id) {
         "Content-Type": "application/json",
       },
     });
-    
+
     if (!response.ok) {
       throw new Error("Network Error Response Identified");
     }
-    
+
     console.log("Post deleted successfully");
 
     const deletePost = await response.json();
-    
   } catch (error) {
     console.error("Error deleting post", error);
   }
@@ -109,33 +107,18 @@ function renderPosts(posts) {
 }
 
 // Обробник події для створення поста
-  document.getElementById('createPostForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const title = document.getElementById('titleInput').value;
-    const content = document.getElementById('contentInput').value;
-    createPost(title, content);
-  });
+document.getElementById("createPostForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title = document.getElementById("titleInput").value;
+  const content = document.getElementById("contentInput").value;
+  createPost(title, content);
+});
 
 // Обробник події для редагування поста
 //   document.addEventListener('click', cb);
-//   // Оновлення поста
-// document.addEventListener("DOMContentLoaded", function () {
-//   document.querySelectorAll(".editPostButton").forEach(button => {
-//       button.addEventListener("click", function () {
-//           const post = this.closest(".post");
-//           const titleElement = post.querySelector("h2");
-//           const textElement = post.querySelector("p");
-//           const postId = this.getAttribute("data-id");
-//           const newTitle = prompt("Введіть новий заголовок:", titleElement.textContent);
-//           const newText = prompt("Введіть новий текст поста:", textElement.textContent);
 
-//           if (newTitle !== null) titleElement.textContent = newTitle;
-//           if (newText !== null) textElement.textContent = newText;
+// Оновлення поста
 
-//           console.log(`Пост із ID ${postId} оновлено:`, { newTitle, newText });
-//       });
-//   });
-// });
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("editPostButton")) {
     const findId = event.target.getAttribute("data-id");
@@ -149,6 +132,13 @@ document.addEventListener("click", function (event) {
 
 // Обробник події для видалення поста
 //   document.addEventListener('click', cb);
+document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("deletePostButton")) {
+    console.log("Delete button clicked"); // Debugging log
+    const id = event.target.getAttribute("data-id");
+    deletePost(id);
+  }
+});
 
 // Обробник події для додавання коментаря
 //   document.addEventListener('submit', cb);
