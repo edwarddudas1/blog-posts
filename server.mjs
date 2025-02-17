@@ -118,33 +118,6 @@ app.put("/posts/:id", (req, res) => {
   );
 });
 
-app.delete("/posts/:id", (req, res) => {
-  fs.readFile(
-    path.join(__dirname, "public", "db.json"),
-    "utf8",
-    (err, data) => {
-      if (err) {
-        console.error("Error reading file:", err);
-        res.status(500).send("Error reading file");
-        return;
-      }
-      const db = JSON.parse(data);
-      db.posts = db.posts.filter((post) => post.id != req.params.id);
-      fs.writeFile(
-        path.join(__dirname, "public", "db.json"),
-        JSON.stringify(db, null, 2),
-        (err) => {
-          if (err) {
-            console.error("Error writing file:", err);
-            res.status(500).send("Error writing file");
-            return;
-          }
-          res.status(200).send("Post deleted");
-        }
-      );
-    }
-  );
-});
 
 app.post("/posts/:id/comments", (req, res) => {
   const postId = req.params.id;

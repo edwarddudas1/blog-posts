@@ -34,7 +34,7 @@ async function createPost(title, content) {
       throw new Error("Failed to create post");
     }
 
-    const newPost = await response.json(); 
+    const newPost = await response.json();
     postsArray.push(newPost);
     renderPosts(postsArray);
   } catch (error) {
@@ -78,7 +78,7 @@ async function deletePost(id) {
       throw new Error("Network Error Response Identified");
     }
 
-    postsArray = postsArray.filter(post => post.id !== id);
+    postsArray = postsArray.filter((post) => post.id !== id);
     renderPosts(postsArray);
   } catch (error) {
     console.error("Error deleting post", error);
