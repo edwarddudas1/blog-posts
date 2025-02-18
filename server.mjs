@@ -171,13 +171,12 @@ app.delete("/posts/:id", (req, res) => {
         return;
       }
       const jsonGetData = JSON.parse(data);
-      const filterIndex = jsonGetData.posts.filter(
-        (post) => post.id != getId
+      jsonGetData.posts = jsonGetData.posts.filter((post) => post.id != getId
       );
-      
+
       fs.writeFile(
         path.join(__dirname, "public", "bd.json"),
-        JSON.stringify(jsonParseData, null, 2),
+        JSON.stringify(jsonGetData, null, 2),
         "utf8",
         (error) => {
           if (error) {
@@ -185,7 +184,7 @@ app.delete("/posts/:id", (req, res) => {
             res.status(500).send("Error writing file");
             return;
           }
-          res.status(200).send("Post is successfully updated");
+          res.status(200).send("Post is deleted");
         }
       );
     }
