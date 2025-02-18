@@ -158,6 +158,42 @@ app.post("/posts/:id/comments", (req, res) => {
   );
 });
 
+app.delete("/posts/:id", (req, res) => {
+  const getId = req.params.id;
+
+  fs.readFile(
+    path.join(__dirname, "public", "bd.json"),
+    "utf8",
+    (error, data) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send("Error reading file");
+        return;
+      }
+      const jsonGetData = JSON.parse(data);
+      const filterIndex = jsonGetData.posts.filter(
+        (post) => post.id != getId
+      );
+      
+      fs.writeFile(
+        path.join(__dirname, "public", "bd.json"),
+        JSON.stringify(jsonParseData, null, 2),
+        "utf8",
+        (error) => {
+          if (error) {
+            console.log(error);
+            res.status(500).send("Error writing file");
+            return;
+          }
+          res.status(200).send("Post is successfully updated");
+        }
+      );
+    }
+  );
+});
+
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
 });
+
+
