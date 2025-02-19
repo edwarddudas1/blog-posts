@@ -46,20 +46,26 @@ async function createPost(title, content) {
 async function updatePost(id, newTitle, newContent) {
   try {
     const response = await fetch(`/posts/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ title: newTitle, content: newContent }),
     });
-    console.log("updatePost");
+
     if (!response.ok) {
-      throw new Error("Network Error Response Identified");
+      throw new Error("Failed to update post");
     }
+
     const updatedPost = await response.json();
     console.log("Updated post:", updatedPost);
+
+    postsArray = postsArray.map((post) =>
+      post.id === id ? updatedPost : post
+    );
+    renderPosts(postsArray);
   } catch (error) {
-    console.error(error);
+    console.error("Error updating post:", error);
   }
 }
 
@@ -124,14 +130,14 @@ document.addEventListener("click", function (event) {
     const findId = event.target.getAttribute("data-id");
     const newTitle = prompt("Введіть новий заголовок:");
     const newText = prompt("Введіть новий текст поста:");
+
     if (newTitle && newText) {
-      updatePost(findId, newTitle, newText);
+      updatePost(Number(findId), newTitle, newText); // ✅ Приводим ID к числу
     }
   }
 });
 
 // Обробник події для видалення поста
-//   document.addEventListener('click', cb);
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("deletePostButton")) {
     console.log("Delete button clicked"); // Debugging log
@@ -142,34 +148,6 @@ document.addEventListener("click", (event) => {
 
 // Обробник події для додавання коментаря
 //   document.addEventListener('submit', cb);
-document.addEventListener("DOMContentLoaded", function() {
-  let commentsList = document.getElementById("commentsList");
-  let storedComments = JSON.parse(localStorage.getItem("comments")) || [];
-  
-  storedComments.forEach(commentText => {
-      let commentItem = document.createElement("li");
-      commentItem.textContent = commentText;
-      commentsList.appendChild(commentItem);
-  });
-});
-
-document.querySelector(".createCommentForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-  let input = document.querySelector(".commentInput");
-  let commentText = input.value.trim();
-  
-  if (commentText !== "") {
-      let commentItem = document.createElement("li");
-      commentItem.textContent = commentText;
-      document.getElementById("commentsList").appendChild(commentItem);
-      
-      let storedComments = JSON.parse(localStorage.getItem("comments")) || [];
-      storedComments.push(commentText);
-      localStorage.setItem("comments", JSON.stringify(storedComments));
-      
-      input.value = "";
-  }
-});
 
 // Запуск додатку
 async function startApp() {

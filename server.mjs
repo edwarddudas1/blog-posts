@@ -89,8 +89,9 @@ app.put("/posts/:id", (req, res) => {
       }
       const jsonParseData = JSON.parse(data);
       const checkIndex = jsonParseData.posts.findIndex(
-        (post) => post.id === getId
+        (post) => String(post.id) === getId
       );
+
       if (checkIndex === -1) {
         res.status(404).send("Post not found");
         return;
@@ -111,13 +112,40 @@ app.put("/posts/:id", (req, res) => {
             res.status(500).send("Error writing file");
             return;
           }
-          res.status(200).send("Post is successfully updated");
+          res.status(200).json(jsonParseData.posts[checkIndex]); // ✅ Возвращаем обновлённый пост
         }
       );
     }
   );
 });
 
+app.delete("/posts/:id", (req, res) => {
+  fs.readFile(
+    path.join(__dirname, "public", "db.json"),
+    "utf8",
+    (err, data) => {
+      if (err) {
+        console.error("Error reading file:", err);
+        res.status(500).send("Error reading file");
+        return;
+      }
+      const db = JSON.parse(data);
+      db.posts = db.posts.filter((post) => post.id != req.params.id);
+      fs.writeFile(
+        path.join(__dirname, "public", "db.json"),
+        JSON.stringify(db, null, 2),
+        (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+            res.status(500).send("Error writing file");
+            return;
+          }
+          res.status(200).send("Post deleted");
+        }
+      );
+    }
+  );
+});
 
 app.post("/posts/:id/comments", (req, res) => {
   const postId = req.params.id;
@@ -158,41 +186,6 @@ app.post("/posts/:id/comments", (req, res) => {
   );
 });
 
-app.delete("/posts/:id", (req, res) => {
-  const getId = req.params.id;
-
-  fs.readFile(
-    path.join(__dirname, "public", "bd.json"),
-    "utf8",
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        res.status(500).send("Error reading file");
-        return;
-      }
-      const jsonGetData = JSON.parse(data);
-      jsonGetData.posts = jsonGetData.posts.filter((post) => post.id != getId
-      );
-
-      fs.writeFile(
-        path.join(__dirname, "public", "bd.json"),
-        JSON.stringify(jsonGetData, null, 2),
-        "utf8",
-        (error) => {
-          if (error) {
-            console.log(error);
-            res.status(500).send("Error writing file");
-            return;
-          }
-          res.status(200).send("Post is deleted");
-        }
-      );
-    }
-  );
-});
-
 app.listen(port, () => {
   console.log(`Server running on port http://localhost:${port}`);
 });
-
-

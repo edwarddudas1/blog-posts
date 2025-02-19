@@ -2,8 +2,8 @@
   "posts": [
     {
       "id": "2",
-      "title": "post 2",
-      "content": "this is the second post",
+      "title": "edit post 2",
+      "content": "test",
       "comments": [
         "hello2",
         "great post2",
