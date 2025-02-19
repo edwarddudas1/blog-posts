@@ -44,14 +44,14 @@ async function createPost(title, content) {
 }
 
 // Оновлення поста
-async function updatePost(id, newTitle, newContent) {
+const updatePost = async (id, title, content) => {
   try {
-    const response = await fetch(`/posts/${id}`, {
+    const response = await fetch(`http://localhost:3000/posts/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title: newTitle, content: newContent }),
+      body: JSON.stringify({ title, content }), // Send the post data as an object
     });
 
     if (!response.ok) {
@@ -61,14 +61,17 @@ async function updatePost(id, newTitle, newContent) {
     const updatedPost = await response.json();
     console.log("Updated post:", updatedPost);
 
+    // Optionally, update the postsArray locally to reflect the updated post
     postsArray = postsArray.map((post) =>
-      post.id === id ? updatedPost : post
+      post.id === id ? { ...post, title, content } : post
     );
-    renderPosts(postsArray);
+    renderPosts(postsArray); // Re-render the updated posts list
   } catch (error) {
     console.error("Error updating post:", error);
   }
-}
+};
+
+
 
 // Видалення поста
 async function deletePost(id) {
@@ -158,11 +161,12 @@ document.getElementById("createPostForm").addEventListener("submit", (e) => {
 document.addEventListener("click", function (event) {
   if (event.target.classList.contains("editPostButton")) {
     const findId = event.target.getAttribute("data-id");
-    const newTitle = prompt("Введіть новий заголовок:");
-    const newText = prompt("Введіть новий текст поста:");
+    const newTitle = prompt("Enter new title:");
+    const newText = prompt("Enter new content:");
 
     if (newTitle && newText) {
-      updatePost(Number(findId), newTitle, newText); 
+      console.log(`Updating post with ID: ${findId}`);
+      updatePost(Number(findId), newTitle, newText);
     }
   }
 });
@@ -200,19 +204,14 @@ async function startApp() {
   const posts = await getPosts();
   const sourceElement = document.querySelector(".menuTemplate");
 
-  const source =
-    sourceElement.innerHTML ||
-    sourceElement.content.firstElementChild.innerHTML;
+  const source = sourceElement.innerHTML || sourceElement.content.firstElementChild.innerHTML;
   if (!source.trim()) {
     console.error("Template source is empty");
     return;
   }
 
-  const template = Handlebars.compile(source);
-  const html = template({ posts: postsArray });
-
-  document.querySelector(".menuContainer").innerHTML = html;
-  renderPosts(postsArray);
+  template = Handlebars.compile(source); // Move this here so template is available globally
+  renderPosts(postsArray); // No need to call renderPosts again in startApp
 }
 
 startApp();

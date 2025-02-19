@@ -61,13 +61,20 @@ app.post("/posts", (req, res) => {
     }
 
     const db = JSON.parse(data);
+    let newPostId = 1;
+
+    // Generate a new post ID: check if there are existing posts and assign the next ID.
+    if (db.posts && db.posts.length > 0) {
+      newPostId = db.posts[db.posts.length - 1].id + 1;
+    }
+
     const newPost = {
-      id: db.posts.length > 0 ? db.posts[db.posts.length - 1].id + 1 : 1,
+      id: newPostId,
       title,
       content,
-      comments: [], 
+      comments: [],
     };
-    
+
     db.posts.push(newPost);
 
     fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(db, null, 2), "utf8", (error) => {
@@ -79,6 +86,43 @@ app.post("/posts", (req, res) => {
     });
   });
 });
+
+// Update a post
+app.put('/posts/:id', (req, res) => {
+  const postId = Number(req.params.id);
+  const updatedPostData = req.body; // The updated post data from the client
+
+  fs.readFile(path.join(__dirname, "public", "bd.json"), "utf8", (error, data) => {
+    if (error) {
+      console.error("Error reading file:", error);
+      return res.status(500).send("Error reading file");
+    }
+
+    const db = JSON.parse(data);
+    const postIndex = db.posts.findIndex((p) => p.id === postId);
+
+    if (postIndex === -1) {
+      return res.status(404).send('Post not found');
+    }
+
+    // Update the post data
+    db.posts[postIndex] = { ...db.posts[postIndex], ...updatedPostData };
+
+    // Write the updated data back to the file
+    fs.writeFile(path.join(__dirname, "public", "bd.json"), JSON.stringify(db, null, 2), "utf8", (writeError) => {
+      if (writeError) {
+        console.error("Error writing file:", writeError);
+        return res.status(500).send("Error writing file");
+      }
+
+      res.status(200).json(db.posts[postIndex]);
+    });
+  });
+});
+
+
+
+
 
 // Add a comment to a post
 app.post("/posts/:id/comments", (req, res) => {
