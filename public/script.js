@@ -76,24 +76,28 @@ const updatePost = async (id, title, content) => {
 // Видалення поста
 async function deletePost(id) {
   try {
+    // Send DELETE request to the server
     const response = await fetch(`/posts/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
+
     console.log("deletePost response:", response);
 
     if (!response.ok) {
-      throw new Error("Network Error Response Identified");
+      throw new Error("Failed to delete the post");
     }
 
-    postsArray = postsArray.filter((post) => post.id !== id);
-    renderPosts(postsArray);
+    // Remove the post from the local posts array after successful deletion
+    postsArray = postsArray.filter((post) => post.id !== Number(id));
+    renderPosts(postsArray); // Re-render the posts list to reflect the change
   } catch (error) {
     console.error("Error deleting post", error);
   }
 }
+
 
 // Додавання коментаря до поста
 async function createComment(postId, commentText) {
@@ -174,11 +178,16 @@ document.addEventListener("click", function (event) {
 // Обробник події для видалення поста
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("deletePostButton")) {
-    console.log("Delete button clicked"); 
     const id = event.target.getAttribute("data-id");
-    deletePost(id);
+    if (id) {
+      console.log("Delete button clicked for post ID:", id);
+      deletePost(id); 
+    } else {
+      console.error("No valid post ID found for delete operation.");
+    }
   }
 });
+
 
 // Обробник події для додавання коментаря
 document.addEventListener("submit", (event) => {
