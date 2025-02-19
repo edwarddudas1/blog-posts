@@ -1,36 +1,19 @@
 {
-    "posts": [
-        {
-            "id": "1",
-            "title": "post 1",
-            "content": "this is the first post",
-            "comments": [
-                "hello1",
-                "great post",
-                "test comment"
-            ]
-        },
-
-        {
-            "id": "2",
-            "title": "post 2",
-            "content": "this is the second post",
-            "comments": [
-                "hello2",
-                "great post2",
-                "test comment2"
-            ]
-        },
-
-        {
-            "id": "3",
-            "title": "post 3",
-            "content": "this is the third post",
-            "comments": [
-                "hello3",
-                "great post3",
-                "test comment3"
-            ]
-        }
-    ]
+  "posts": [
+    {
+      "id": 2,
+      "title": "update",
+      "content": "test",
+      "comments": [
+        "hello2",
+        "great post2",
+        "test comment2",
+        "trst",
+        "test adding comment",
+        "ghjk",
+        "test adding new comments",
+        "test commens"
+      ]
+    }
+  ]
 }
