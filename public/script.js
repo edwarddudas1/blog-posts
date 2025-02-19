@@ -14,6 +14,7 @@ async function getPosts() {
     const data = await response.json();
     console.log("Fetched data:", data);
     postsArray = data.posts;
+    
   } catch (error) {
     console.error("Error fetching or processing data", error);
   }
@@ -42,7 +43,7 @@ async function createPost(title, content) {
   }
 }
 
-//   // Оновлення поста
+// Оновлення поста
 async function updatePost(id, newTitle, newContent) {
   try {
     const response = await fetch(`/posts/${id}`, {
@@ -92,13 +93,42 @@ async function deletePost(id) {
 }
 
 // Додавання коментаря до поста
-//   async function createComment(postId, comment) {
-//     try {
+async function createComment(postId, commentText) {
+  console.log("🚨 Debugging createComment | postId:", postId, "Comment:", commentText);
 
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
+  if (!postId || postId < 1) {
+    console.error("❌ Invalid post ID:", postId);
+    return;
+  }
+
+  try {
+    const response = await fetch(`/posts/${postId}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ content: commentText }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create comment. Server responded with status ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("✅ Comment added:", result);
+
+    postsArray = postsArray.map((post) =>
+      post.id === postId
+        ? { ...post, comments: [...(post.comments || []), result.comment] }
+        : post
+    );
+    renderPosts(postsArray);
+  } catch (error) {
+    console.error("❌ Error creating comment:", error);
+  }
+}
+
+
 
 // Оновлення відображення постів на сторінці
 
@@ -132,7 +162,7 @@ document.addEventListener("click", function (event) {
     const newText = prompt("Введіть новий текст поста:");
 
     if (newTitle && newText) {
-      updatePost(Number(findId), newTitle, newText); // ✅ Приводим ID к числу
+      updatePost(Number(findId), newTitle, newText); 
     }
   }
 });
@@ -140,14 +170,30 @@ document.addEventListener("click", function (event) {
 // Обробник події для видалення поста
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("deletePostButton")) {
-    console.log("Delete button clicked"); // Debugging log
+    console.log("Delete button clicked"); 
     const id = event.target.getAttribute("data-id");
     deletePost(id);
   }
 });
 
 // Обробник події для додавання коментаря
-//   document.addEventListener('submit', cb);
+document.addEventListener("submit", (event) => {
+  if (event.target.classList.contains("createCommentForm")) {
+    event.preventDefault();
+
+    const postId = Number(event.target.getAttribute("data-post-id"));
+    const commentInput = event.target.querySelector(".commentInput");
+    const commentText = commentInput.value.trim();
+
+    if (!commentText) {
+      console.error("Comment cannot be empty");
+      return;
+    }
+
+    createComment(postId, commentText);
+    commentInput.value = "";
+  }
+});
 
 // Запуск додатку
 async function startApp() {

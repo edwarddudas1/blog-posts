@@ -20,7 +20,7 @@
     <div class="menuContainer"></div>
 
     <!-- ШАБЛОН -->
-    <template class="menuTemplate">  
+    <template class="menuTemplate">
       <div class="post">
         {{#each posts}}
         <h2>{{this.title}}</h2>
@@ -32,14 +32,13 @@
           <ul>
             <li>{{this.comments}}</li>
           </ul>
-          <form class="createCommentForm">
+          <form class="createCommentForm" data-post-id="{{id}}">
             <input
               type="text"
               class="commentInput"
-              placeholder="Новий коментар"
-              required
+              placeholder="Your comment"
             />
-            <button type="submit" data-id="{{this.id}}">Додати коментар</button>
+            <button type="submit">Add Comment</button>
           </form>
         </div>
         {{/each}}
