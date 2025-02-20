@@ -34,4 +34,6 @@
     resize: vertical;
 }
 
-/* Стиль кнопки залишається без змін */
+#heding1 {
+text-align: center;
+}
