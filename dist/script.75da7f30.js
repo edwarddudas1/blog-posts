@@ -410,6 +410,8 @@ document.getElementById("createPostForm").addEventListener("submit", function (e
   var title = document.getElementById("titleInput").value;
   var content = document.getElementById("contentInput").value;
   createPost(title, content);
+  document.getElementById("titleInput").value = "";
+  document.getElementById("contentInput").value = "";
 });
 
 // Обробник події для редагування поста
