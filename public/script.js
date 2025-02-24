@@ -4,7 +4,9 @@ let template;
 // Отримання списку постів
 async function getPosts() {
   try {
-    const response = await fetch("/bd.json");
+    const response = await fetch("http://localhost:3000/posts");
+
+
     console.log("Response status:", response.status);
 
     if (!response.ok) {
@@ -13,7 +15,7 @@ async function getPosts() {
 
     const data = await response.json();
     console.log("Fetched data:", data);
-    postsArray = data.posts;
+    postsArray = data;
     
   } catch (error) {
     console.error("Error fetching or processing data", error);
@@ -22,7 +24,7 @@ async function getPosts() {
 
 async function createPost(title, content) {
   try {
-    const response = await fetch("/posts", {
+    const response = await fetch("http://localhost:3000/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,6 +39,7 @@ async function createPost(title, content) {
 
     const newPost = await response.json();
     postsArray.push(newPost);
+    console.log("Rendering posts with data:", postsArray);
     renderPosts(postsArray);
   } catch (error) {
     console.log(error);
@@ -47,6 +50,7 @@ async function createPost(title, content) {
 const updatePost = async (id, title, content) => {
   try {
     const response = await fetch(`http://localhost:3000/posts/${id}`, {
+
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +81,8 @@ const updatePost = async (id, title, content) => {
 async function deletePost(id) {
   try {
     // Send DELETE request to the server
-    const response = await fetch(`/posts/${id}`, {
+    const response = await fetch(`http://localhost:3000/posts/${id}`, {
+
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +114,8 @@ async function createComment(postId, commentText) {
   }
 
   try {
-    const response = await fetch(`/posts/${postId}/comments`, {
+    const response = await fetch(`http://localhost:3000/posts/${postId}/comments`, {
+
       method: "POST",
       headers: {
         "Content-Type": "application/json",
